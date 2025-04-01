@@ -54,10 +54,10 @@ fn bfs_find_path(maze: &[i32], snake: &[i32], start: (usize, usize), end: (usize
 
                 //不是障碍物且未访问过且头身未碰撞
                 if maze[ni] == 0
-                    && !visited.contains(&(nx as usize, ny as usize))
+                    && !visited.contains(&(nx as usize, ny as usize, snake_body.clone()))
                     && !(nx == second_body_x && ny == second_body_y) 
                 {
-                    visited.insert((nx as usize, ny as usize));
+                    visited.insert((nx as usize, ny as usize, snake_body.clone()));
 
                     let mut new_snake_body = vec![nx as i32, ny as i32];
                     new_snake_body.extend_from_slice(&snake_body);
@@ -209,4 +209,27 @@ mod tests {
             1
         ) > 0);
     }
+
+    #[test]
+    fn test_case_6() {
+        assert!(greedy_snake_barriers_checker(
+            vec![8, 4, 8, 5, 8, 6, 8, 7],
+            1,
+            vec![1, 1],
+            vec![6, 1, 6, 2, 6, 3, 6, 4, 7, 4, 4, 5, 5, 5, 5, 6, 3, 6, 3, 7, 2, 7, 5, 8],
+            1
+        ) > 0);
+    }
+
+    #[test]
+    fn test_case_7() {
+        assert!(greedy_snake_barriers_checker(
+            vec![4, 4, 4, 3, 4, 2, 4, 1],
+            1,
+            vec![6, 4],
+            vec![3, 5, 2, 5, 5, 3, 6, 5, 7, 5, 8, 5, 5, 6, 4, 6, 3, 6, 2, 6, 1, 6, 1, 7],
+            1
+        ) > 0);
+    }
+    
 }
