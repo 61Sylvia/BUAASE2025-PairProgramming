@@ -1,0 +1,1 @@
+C:\Users\48464\Desktop\3rd_year_2nd_semester\software_engineering\pair\PairProgramming\BUAASE2025-PairProgramming\T2\target\wasm32-unknown-unknown\release\t1_rust.wasm: C:\Users\48464\Desktop\3rd_year_2nd_semester\software_engineering\pair\PairProgramming\BUAASE2025-PairProgramming\T2\src\lib.rs
