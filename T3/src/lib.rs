@@ -93,7 +93,7 @@ pub fn greedy_snake_step(
                 score += 5;
             }
 
-            score += 10 / (dist_after + 1);
+            score += 30 / (dist_after + 1);
         }
 
         // 远离其他蛇头
@@ -105,7 +105,7 @@ pub fn greedy_snake_step(
             }
         }
 
-        // 计算新蛇头位置的风险
+        // 相对碰撞：计算新蛇头位置的风险
         score += calculate_risk(new_head, other_snakes, snake_num, n,&obstacles);
 
         println!("score:({},{})", dir_index, score);
@@ -123,18 +123,74 @@ pub fn greedy_snake_step(
 mod tests {
     use super::*;
 
+     #[test]
+    fn test_greedy_snake_step_two_snakes_1() {
+        let n = 5;
+        let snake = [3, 2, 2, 2, 1, 2, 1, 3]; 
+        let snake_num = 1;
+        let other_snakes = [2, 3, 2, 4, 3, 4, 4, 4]; 
+        let food_num = 5;
+        let foods = [1, 1, 2, 5, 3, 5, 4, 5, 5, 2]; 
+        let round = 11;
+
+        let direction = greedy_snake_step(n, &snake, snake_num, &other_snakes, food_num, &foods, round);
+        assert_eq!(direction, 3); 
+    }
+
     #[test]
-    fn test_greedy_snake_step_two_snakes() {
+    fn test_greedy_snake_step_two_snakes_2() {
+
+        let n = 5;
+        let snake = [2,1,3,1,4,1,5,1]; // 自己的蛇
+        let snake_num = 1;
+        let other_snakes = [2,3,1,3,1,4,1,5]; // 其他蛇
+        let food_num = 5;
+        let foods = [1,1,2,4,2,5,3,5,4,5]; 
+        let round = 10;
+
+        let direction = greedy_snake_step(n, &snake, snake_num, &other_snakes, food_num, &foods, round);
+        assert_eq!(direction, 1); // 预期方向：左
+    }
+
+    #[test]
+    fn test_greedy_snake_step_two_snakes_3() {
         // 场地大小为 5×5，两条蛇，果子数量为 5
-        let arena = vec![
-            5, // 地图大小 n = 5
-            3, 2, 2, 2, 1, 2, 1, 3, // 自己的蛇
-            1, // 蛇的数量
-            2, 3, 2, 4, 3, 4, 4, 4, // 其他蛇 (2,5) (3,5) (4,5) (5,5)
-            5, // 食物数量
-            1, 1, 2, 5, 3, 5, 4, 5, 5, 2, // 食物 (2,3) (3,2) (3,4) (4,3) (5,3)
-            11, // 当前轮数
-        ];
-        assert_eq!(greedy_snake_step(&arena), 3); // 预期方向：上
+        let n = 5;
+        let snake = [2,1,3,1,4,1,5,1]; // 自己的蛇
+        let snake_num = 1;
+        let other_snakes = [1,2,1,3,1,4,1,5]; // 其他蛇
+        let food_num = 5;
+        let foods = [1,1,2,4,2,5,3,5,4,5];
+        let round = 12;
+
+        let direction = greedy_snake_step(n, &snake, snake_num, &other_snakes, food_num, &foods, round);
+        assert_eq!(direction, 0); // 预期方向：上
+    }
+
+    #[test]
+    fn test_greedy_snake_step_two_snakes_4() {
+        let n = 5;
+        let snake = [2,1,3,1,4,1,5,1]; // 自己的蛇
+        let snake_num = 1;
+        let other_snakes = [1,2,2,2,3,2,4,2]; // 其他蛇
+        let food_num = 5;
+        let foods = [1,1,2,4,2,5,3,5,4,5]; 
+        let round = 10;
+        let direction = greedy_snake_step(n, &snake, snake_num, &other_snakes, food_num, &foods, round);
+        assert_eq!(direction, 1); // 预期方向：左
+    }
+
+    #[test]
+    fn test_greedy_snake_step_two_snakes_5() {
+        let n = 5;
+        let snake = [3,2,3,3,2,3,2,2]; // 自己的蛇
+        let snake_num = 1;
+        let other_snakes = [4,4,3,4,2,4,1,4]; // 其他蛇
+        let food_num = 5;
+        let foods = [3,1,4,2,5,3,5,4,4,1]; 
+        let round = 14;
+
+        let direction = greedy_snake_step(n, &snake, snake_num, &other_snakes, food_num, &foods, round);
+        assert_eq!(direction, 3); // 预期方向：右
     }
 }
